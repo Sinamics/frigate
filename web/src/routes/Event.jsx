@@ -121,22 +121,26 @@ export default function Event({ eventId }) {
       {data.has_clip ? (
         <Fragment>
           <Heading size="lg">Clip</Heading>
-          <div className="md:w-3/4 sm:w-full m-auto">
-            <VideoPlayer
-              options={{
-                sources: [
-                  {
-                    src: `${apiHost}/vod/event/${eventId}/index.m3u8`,
-                    type: 'application/vnd.apple.mpegurl',
-                  },
-                ],
-                poster: data.has_snapshot
-                  ? `${apiHost}/clips/${data.camera}-${eventId}.jpg`
-                  : `data:image/jpeg;base64,${data.thumbnail}`,
-              }}
-              seekOptions={{ forward: 10, back: 5 }}
-              onReady={(player) => {}}
-            />
+          <div className="outer-max-width m-auto">
+            <div className="aspect-ratio-box w-full relative">
+              <div className="absolute w-full top-0 left-0">
+                <VideoPlayer
+                  options={{
+                    sources: [
+                      {
+                        src: `${apiHost}/vod/event/${eventId}/index.m3u8`,
+                        type: 'application/vnd.apple.mpegurl',
+                      },
+                    ],
+                    poster: data.has_snapshot
+                      ? `${apiHost}/clips/${data.camera}-${eventId}.jpg`
+                      : `data:image/jpeg;base64,${data.thumbnail}`,
+                  }}
+                  seekOptions={{ forward: 10, back: 5 }}
+                  onReady={(player) => {}}
+                />
+              </div>
+            </div>
           </div>
           <div className="flex space-x-4 justify-center">
             <Button color="blue" href={`${apiHost}/api/events/${eventId}/clip.mp4?download=true`} download>
