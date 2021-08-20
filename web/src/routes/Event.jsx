@@ -60,7 +60,13 @@ export default function Event({ eventId }) {
           {data.camera} {data.label} <span className="text-sm">{startime.toLocaleString()}</span>
         </Heading>
         <div className="space-x-4">
-          <Button className="self-start" onClick={() => setShowDetails(!showDetails)} color="gray">
+          <Button color="blue" href={`${apiHost}/api/events/${eventId}/clip.mp4?download=true`} download>
+            <Clip className="w-6" /> Download Clip
+          </Button>
+          <Button color="blue" href={`${apiHost}/api/events/${eventId}/snapshot.jpg?download=true`} download>
+            <Snapshot className="w-6" /> Download Snapshot
+          </Button>
+          <Button className="self-start" onClick={() => setShowDetails(!showDetails)}>
             <ArrowDown className="w-6" />
             {`${showDetails ? 'Hide event Details' : 'View event Details'}`}
           </Button>
@@ -142,14 +148,7 @@ export default function Event({ eventId }) {
               </div>
             </div>
           </div>
-          <div className="flex space-x-4 justify-center">
-            <Button color="blue" href={`${apiHost}/api/events/${eventId}/clip.mp4?download=true`} download>
-              <Clip className="w-6" /> Download Clip
-            </Button>
-            <Button color="blue" href={`${apiHost}/api/events/${eventId}/snapshot.jpg?download=true`} download>
-              <Snapshot className="w-6" /> Download Snapshot
-            </Button>
-          </div>
+          <div className="flex space-x-4 justify-center"></div>
         </Fragment>
       ) : (
         <Fragment>
