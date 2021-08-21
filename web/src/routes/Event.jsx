@@ -5,6 +5,7 @@ import ActivityIndicator from '../components/ActivityIndicator';
 import Button from '../components/Button';
 import Clip from '../icons/Clip';
 import ArrowDown from '../icons/ArrowDropdown';
+import Menu from '../icons/Menu';
 import Delete from '../icons/Delete';
 import Snapshot from '../icons/Snapshot';
 import Dialog from '../components/Dialog';
@@ -14,7 +15,7 @@ import VideoPlayer from '../components/VideoPlayer';
 import { FetchStatus, useApiHost, useEvent, useDelete } from '../api';
 import { Table, Thead, Tbody, Th, Tr, Td } from '../components/Table';
 
-export default function Event({ eventId }) {
+export default function Event({ eventId, close }) {
   const apiHost = useApiHost();
   const { data, status } = useEvent(eventId);
   const [showDialog, setShowDialog] = useState(false);
@@ -42,7 +43,6 @@ export default function Event({ eventId }) {
     if (success) {
       setDeleteStatus(FetchStatus.LOADED);
       setShowDialog(false);
-      route('/events', true);
     }
   }, [eventId, setShowDialog, setDeleteEvent]);
 
@@ -55,11 +55,8 @@ export default function Event({ eventId }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap justify-center">
-        <Heading className="flex-grow">
-          {data.camera} {data.label} <span className="text-sm">{startime.toLocaleString()}</span>
-        </Heading>
-        <div className="space-x-4">
+      <div className="grid grid-cols-6 gap-4">
+        <div class="col-start-1 col-end-8 md:space-x-4">
           <Button color="blue" href={`${apiHost}/api/events/${eventId}/clip.mp4?download=true`} download>
             <Clip className="w-6" /> Download Clip
           </Button>
@@ -69,6 +66,11 @@ export default function Event({ eventId }) {
           <Button className="self-start" onClick={() => setShowDetails(!showDetails)}>
             <ArrowDown className="w-6" />
             {`${showDetails ? 'Hide event Details' : 'View event Details'}`}
+          </Button>
+        </div>
+        <div class="col-end-10 col-span-2 space-x-4">
+          <Button color="gray" className="self-start" onClick={() => close()}>
+            <Menu className="w-6" /> Close
           </Button>
           <Button className="self-start" color="red" onClick={handleClickDelete}>
             <Delete className="w-6" /> Delete event
@@ -126,10 +128,9 @@ export default function Event({ eventId }) {
 
       {data.has_clip ? (
         <Fragment>
-          <Heading size="lg">Clip</Heading>
           <div className="outer-max-width m-auto">
             <div className="aspect-ratio-box w-full relative">
-              <div className="absolute w-full top-0 left-0">
+              <div className="absolute w-full top-10 left-0">
                 <VideoPlayer
                   options={{
                     sources: [
