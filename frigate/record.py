@@ -245,12 +245,12 @@ class RecordingCleanup(threading.Thread):
     def expire_files(self):
         logger.debug("Start expire files (legacy).")
 
-        shortest_retention = self.config.record.retain_days
         default_expire = (
             datetime.datetime.now().timestamp()
             - SECONDS_IN_DAY * self.config.record.retain_days
         )
         delete_before = {}
+
         for name, camera in self.config.cameras.items():
             delete_before[name] = (
                 datetime.datetime.now().timestamp()
@@ -267,11 +267,27 @@ class RecordingCleanup(threading.Thread):
         )
         files_to_check = process.stdout.splitlines()
 
+        # find all the recordings older than the oldest recording in the db
+        oldest_recording = (
+            Recordings.select().order_by(Recordings.start_time.desc()).get()
+        )
+
+        oldest_timestamp = (
+            oldest_recording.start_time
+            if oldest_recording
+            else datetime.datetime.now().timestamp()
+        )
+
+        logger.debug(f"Oldest recording in the db: {oldest_timestamp}")
+        process = sp.run(
+            ["find", RECORD_DIR, "-type", "f", "-newermt", f"@{oldest_timestamp}"],
+            capture_output=True,
+            text=True,
+        )
+        files_to_check = process.stdout.splitlines()
+
         for f in files_to_check:
             p = Path(f)
-            # Ignore files that have a record in the recordings DB
-            if Recordings.select().where(Recordings.path == str(p)).count():
-                continue
             if p.stat().st_mtime < delete_before.get(p.parent.name, default_expire):
                 p.unlink(missing_ok=True)
 
