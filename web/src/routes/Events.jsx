@@ -119,16 +119,18 @@ export default function Events({ path: pathname, limit = API_LIMIT } = {}) {
     [limit, pathname, setSearchString]
   );
 
-  const viewEventHandler = (id) => {
-    //Toggle event view
-    if (viewEvent === id) return setViewEvent(null);
+  const viewEventHandler = useCallback(
+    (id) => {
+      //Toggle event view
+      if (viewEvent === id) return setViewEvent(null);
 
-    //Set event id to be rendered.
-    setViewEvent(id);
-  };
+      //Set event id to be rendered.
+      setViewEvent(id);
+    },
+    [setViewEvent]
+  );
 
   const searchParams = useMemo(() => new URLSearchParams(searchString), [searchString]);
-
   return (
     <div className="space-y-4 w-full">
       <Heading>Events</Heading>
