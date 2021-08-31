@@ -1,8 +1,20 @@
-import { h } from 'preact';
+import { h, FunctionalComponent } from 'preact';
 import Button from './Button';
 import Heading from './Heading';
 
-export default function Box({
+interface IBox {
+  className: string;
+  content: string;
+  elevated: boolean;
+  buttons: any;
+  href: any;
+  header: any;
+  icons: any;
+  media: any;
+  stretch: any;
+}
+
+const Box: FunctionalComponent<IBox> = ({
   buttons = [],
   className = '',
   content,
@@ -12,7 +24,7 @@ export default function Box({
   icons = [],
   media = null,
   ...props
-}) {
+}) => {
   const Element = href ? 'a' : 'div';
 
   const typeClasses = elevated
@@ -32,13 +44,13 @@ export default function Box({
           {content || null}
           {buttons.length ? (
             <div className="flex space-x-4 -ml-2">
-              {buttons.map(({ name, href }) => (
+              {buttons.map(({ name, href }: any) => (
                 <Button key={name} href={href} type="text">
                   {name}
                 </Button>
               ))}
               <div class="flex-grow" />
-              {icons.map(({ name, icon: Icon, ...props }) => (
+              {icons.map(({ name, icon: Icon, ...props }: any) => (
                 <Button aria-label={name} className="rounded-full" key={name} type="text" {...props}>
                   <Icon className="w-6" />
                 </Button>
@@ -49,4 +61,6 @@ export default function Box({
       ) : null}
     </div>
   );
-}
+};
+
+export default Box;

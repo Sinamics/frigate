@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import { h, FunctionalComponent } from 'preact';
 import ActivityIndicator from '../components/ActivityIndicator';
 import Card from '../components/Card';
 import CameraImage from '../components/CameraImage';
@@ -9,7 +9,12 @@ import { useDetectState, useRecordingsState, useSnapshotsState } from '../api/mq
 import { useConfig, FetchStatus } from '../api';
 import { useMemo } from 'preact/hooks';
 
-export default function Cameras() {
+interface ICamera {
+  path: string;
+  default: boolean;
+}
+
+const Cameras: FunctionalComponent<ICamera> = () => {
   const { data: config, status } = useConfig();
 
   return status !== FetchStatus.LOADED ? (
@@ -21,9 +26,15 @@ export default function Cameras() {
       ))}
     </div>
   );
+};
+export default Cameras;
+
+interface ICameras {
+  name: string;
+  conf: any;
 }
 
-function Camera({ name, conf }) {
+const Camera: FunctionalComponent<ICameras> = ({ name, conf }) => {
   const { payload: detectValue, send: sendDetect } = useDetectState(name);
   const { payload: recordValue, send: sendRecordings } = useRecordingsState(name);
   const { payload: snapshotValue, send: sendSnapshots } = useSnapshotsState(name);
@@ -68,4 +79,4 @@ function Camera({ name, conf }) {
   return (
     <Card buttons={buttons} href={href} header={name} icons={icons} media={<CameraImage camera={name} stretch />} />
   );
-}
+};

@@ -7,7 +7,7 @@ import { useConfig } from './api';
 import { useMemo } from 'preact/hooks';
 import NavigationDrawer, { Destination, Separator } from './components/NavigationDrawer';
 
-export default function Sidebar() {
+const Sidebar = () => {
   const { data: config } = useConfig();
   const cameras = useMemo(() => Object.entries(config.cameras), [config]);
 
@@ -15,7 +15,7 @@ export default function Sidebar() {
     <NavigationDrawer header={<Header />}>
       <Destination href="/" text="Cameras" />
       <Match path="/cameras/:camera/:other?">
-        {({ matches }) =>
+        {({ matches }: any) =>
           matches ? (
             <Fragment>
               <Separator />
@@ -28,11 +28,11 @@ export default function Sidebar() {
         }
       </Match>
       <Match path="/recording/:camera/:date?/:hour?/:seconds?">
-        {({ matches }) =>
+        {({ matches }: any) =>
           matches ? (
             <Fragment>
               <Separator />
-              {cameras.map(([camera, conf]) => {
+              {cameras.map(([camera, conf]: any) => {
                 if (conf.record.enabled) {
                   return (
                     <Destination
@@ -64,7 +64,7 @@ export default function Sidebar() {
       <Destination className="self-end" href="https://github.com/blakeblackshear/frigate" text="GitHub" />
     </NavigationDrawer>
   );
-}
+};
 
 const Header = memo(() => {
   return (
@@ -73,3 +73,5 @@ const Header = memo(() => {
     </div>
   );
 });
+
+export default Sidebar;

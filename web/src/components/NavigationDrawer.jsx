@@ -16,15 +16,13 @@ export default function NavigationDrawer({ children, header }) {
       <div
         key="drawer"
         data-testid="drawer"
-        className={`fixed left-0 top-0 bottom-0 lg:sticky max-h-screen flex flex-col w-64 text-gray-700 bg-white dark:text-gray-200 dark:bg-gray-900 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 shadow lg:shadow-none z-20 lg:z-0 transform ${
+        className={`fixed left-0 top-0 bottom-0 lg:sticky max-h-screen flex flex-col w-52 text-gray-700 bg-white dark:text-gray-200 dark:bg-gray-900 flex-shrink-0 border-r border-gray-200 dark:border-gray-700 shadow lg:shadow-none z-20 lg:z-0 transform ${
           !showDrawer ? '-translate-x-full lg:translate-x-0' : 'translate-x-0'
         } transition-transform duration-300`}
         onClick={handleDismiss}
       >
         {header ? (
-          <div className="flex-shrink-0 p-2 flex flex-row items-center justify-between border-b border-gray-200 dark:border-gray-700">
-            {header}
-          </div>
+          <div className="flex justify-center p-1 border-b border-gray-200 dark:border-gray-700 pr-5">{header}</div>
         ) : null}
 
         <nav className="flex flex-col flex-grow overflow-hidden overflow-y-auto p-2 space-y-2">{children}</nav>

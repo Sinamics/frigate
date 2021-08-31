@@ -10,18 +10,18 @@ import { DarkModeProvider, DrawerProvider } from './context';
 import { FetchStatus, useConfig } from './api';
 
 export default function App() {
-  const { status } = useConfig();
+  const { status }: any = useConfig();
   return (
     <DarkModeProvider>
       <DrawerProvider>
         <div data-testid="app" className="w-full">
-          <AppBar />
+          {/* <AppBar /> */}
           {status !== FetchStatus.LOADED ? (
             <div className="flex flex-grow-1 min-h-screen justify-center items-center">
               <ActivityIndicator />
             </div>
           ) : (
-            <div className="flex flex-row min-h-screen w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+            <div className="flex flex-row min-h-screen w-full bg-primary-light dark:bg-primary-dark text-gray-900 dark:text-white">
               <Sidebar />
               <div className="w-full flex-auto p-2 mt-16 px-4 min-w-0">
                 <Router>

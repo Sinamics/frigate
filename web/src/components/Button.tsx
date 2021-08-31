@@ -1,8 +1,8 @@
-import { h, Fragment } from 'preact';
+import { h, Fragment, FunctionalComponent, ComponentChildren } from 'preact';
 import Tooltip from './Tooltip';
 import { useCallback, useRef, useState } from 'preact/hooks';
 
-const ButtonColors = {
+const ButtonColors: any = {
   blue: {
     contained: 'bg-blue-500 focus:bg-blue-400 active:bg-blue-600 ring-blue-300',
     outlined:
@@ -45,13 +45,24 @@ const ButtonColors = {
   },
 };
 
-const ButtonTypes = {
+const ButtonTypes: any = {
   contained: 'text-white shadow focus:shadow-xl hover:shadow-md',
   outlined: '',
   text: 'transition-opacity',
 };
 
-export default function Button({
+interface IButton {
+  children: ComponentChildren;
+  className: string;
+  color: string;
+  disabled: boolean;
+  href: string;
+  size: string;
+  type: string;
+  attrs: any;
+}
+
+const Button: FunctionalComponent<IButton> = ({
   children,
   className = '',
   color = 'blue',
@@ -60,7 +71,7 @@ export default function Button({
   size,
   type = 'contained',
   ...attrs
-}) {
+}) => {
   const [hovered, setHovered] = useState(false);
   const ref = useRef();
 
@@ -74,11 +85,11 @@ export default function Button({
     classes = classes.replace(/(?:focus|active|hover):[^ ]+/g, '');
   }
 
-  const handleMousenter = useCallback((event) => {
+  const handleMousenter = useCallback(() => {
     setHovered(true);
   }, []);
 
-  const handleMouseleave = useCallback((event) => {
+  const handleMouseleave = useCallback(() => {
     setHovered(false);
   }, []);
 
@@ -102,4 +113,5 @@ export default function Button({
       {hovered && attrs['aria-label'] ? <Tooltip text={attrs['aria-label']} relativeTo={ref} /> : null}
     </Fragment>
   );
-}
+};
+export default Button;

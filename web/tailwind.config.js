@@ -1,3 +1,5 @@
+// tailwind.config.js
+const colors = require('tailwindcss/colors');
 module.exports = {
   purge: ['./public/**/*.html', './src/**/*.jsx'],
   darkMode: 'class',
@@ -17,6 +19,16 @@ module.exports = {
       '2xl': '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)',
       '3xl': '',
       none: '',
+    },
+    colors: {
+      // Configure your color palette here
+      transparent: 'transparent',
+      current: 'currentColor',
+      primary: {
+        light: '#E3E2E2',
+        DEFAULT: '#E3E2E2',
+        dark: '#1C1B1B',
+      },
     },
   },
   variants: {
