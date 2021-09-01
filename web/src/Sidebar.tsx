@@ -5,64 +5,23 @@ import { memo } from 'preact/compat';
 import { ENV } from './env';
 import { useConfig } from './api';
 import { useMemo } from 'preact/hooks';
-import NavigationDrawer, { Destination, Separator } from './components/NavigationDrawer';
 
-const Sidebar = () => {
+import Events from './views/Events';
+
+import ScrollMenu from './components/ScrollMenu';
+
+const Sidebar = ({ children }) => {
   const { data: config } = useConfig();
   const cameras = useMemo(() => Object.entries(config.cameras), [config]);
 
   return (
-    <NavigationDrawer header={<Header />}>
-      <Destination href="/" text="Cameras" />
-      <Match path="/cameras/:camera/:other?">
-        {({ matches }: any) =>
-          matches ? (
-            <Fragment>
-              <Separator />
-              {cameras.map(([camera]) => (
-                <Destination href={`/cameras/${camera}`} text={camera} />
-              ))}
-              <Separator />
-            </Fragment>
-          ) : null
-        }
-      </Match>
-      <Match path="/recording/:camera/:date?/:hour?/:seconds?">
-        {({ matches }: any) =>
-          matches ? (
-            <Fragment>
-              <Separator />
-              {cameras.map(([camera, conf]: any) => {
-                if (conf.record.enabled) {
-                  return (
-                    <Destination
-                      path={`/recording/${camera}/:date?/:hour?/:seconds?`}
-                      href={`/recording/${camera}`}
-                      text={camera}
-                    />
-                  );
-                }
-                return null;
-              })}
-              <Separator />
-            </Fragment>
-          ) : null
-        }
-      </Match>
-      <Destination href="/birdseye" text="Birdseye" />
-      <Destination href="/events" text="Events" />
-      <Destination href="/debug" text="Debug" />
-      <Separator />
-      <div className="flex flex-grow" />
-      {ENV !== 'production' ? (
-        <Fragment>
-          <Destination href="/styleguide" text="Style Guide" />
-          <Separator />
-        </Fragment>
-      ) : null}
-      <Destination className="self-end" href="https://blakeblackshear.github.io/frigate" text="Documentation" />
-      <Destination className="self-end" href="https://github.com/blakeblackshear/frigate" text="GitHub" />
-    </NavigationDrawer>
+    <Fragment>
+      <ScrollMenu header={<Header />}>
+        <Events />
+      </ScrollMenu>
+
+      {children}
+    </Fragment>
   );
 };
 

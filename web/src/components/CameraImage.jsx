@@ -40,6 +40,7 @@ export default function CameraImage({ camera, onload, searchParams = '', stretch
       return;
     }
     img.src = `${apiHost}/api/${name}/latest.jpg?h=${scaledHeight}${searchParams ? `&${searchParams}` : ''}`;
+    console.log(img);
   }, [apiHost, canvasRef, name, img, searchParams, scaledHeight]);
 
   return (

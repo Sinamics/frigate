@@ -130,34 +130,66 @@ export default function Events({ path: pathname, limit = API_LIMIT } = {}) {
   const searchParams = useMemo(() => new URLSearchParams(searchString), [searchString]);
 
   return (
-    <div className="space-y-4 w-full">
-      <Heading>Events</Heading>
+    <div className="w-full">
+      <p className="text-center text-xs">Events</p>
+      <div className="p-2 w-full">
+        <div className="dropdown inline-block relative">
+          <button className="font-semibold py-2 px-4 rounded inline-flex items-center">
+            <span className="mr-1 text-xs">Select Camera</span>
+            <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />{' '}
+            </svg>
+          </button>
+          <ul className="dropdown-menu absolute hidden text-gray-700 pt-1 z-50 text-xs w-full">
+            <li className="">
+              <a className="rounded-t bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">
+                Picamera
+              </a>
+            </li>
+            <li className="">
+              <a className="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">
+                Reolink
+              </a>
+            </li>
+            <li className="">
+              <a className="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="#">
+                Test
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="min-w-0 ">
+        {events.map(({ camera, id, label, start_time: startTime, end_time: endTime, top_score: score, zones }, i) => {
+          const duration = Math.round(endTime - startTime).toFixed(0);
+          const start = new Date(parseInt(startTime * 1000, 10));
 
-      <Filters onChange={handleFilter} searchParams={searchParams} />
+          const end = new Date(parseInt(endTime * 1000, 10));
+          const ref = i === events.length - 1 ? lastCellRef : undefined;
+          return (
+            <Fragment key={id}>
+              <div className="grid items-center">
+                <div className="p-1 flex items-center space-x-2 rounded-lg shadow-md hover:scale-105 transition transform duration-100 cursor-pointer">
+                  <div>
+                    <img
+                      ref={(el) => (scrollToRef[id] = el)}
+                      width="55"
+                      height="55"
+                      className="cursor-pointer"
+                      style="min-height: 48px; min-width: 48px;"
+                      src={`${apiHost}/api/events/${id}/thumbnail.jpg`}
+                    />
+                  </div>
+                  <div>
+                    <h1 className="text-xs font-bold mb-0">{label}</h1>
+                    <p className="w-full text-xs">{camera}</p>
+                    <p className="w-full text-xs">{`Date: ${start.toLocaleDateString()}`}</p>
+                    <p className="w-full text-xs">{`Duration: ${duration} sec`}</p>
+                  </div>
+                </div>
+              </div>
 
-      <div className="min-w-0 overflow-auto">
-        <Table className="min-w-full table-fixed">
-          <Thead>
-            <Tr>
-              <Th />
-              <Th>Camera</Th>
-              <Th>Label</Th>
-              <Th>Score</Th>
-              <Th>Zones</Th>
-              <Th>Date</Th>
-              <Th>Start</Th>
-              <Th>End</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {events.map(
-              ({ camera, id, label, start_time: startTime, end_time: endTime, top_score: score, zones }, i) => {
-                const start = new Date(parseInt(startTime * 1000, 10));
-                const end = new Date(parseInt(endTime * 1000, 10));
-                const ref = i === events.length - 1 ? lastCellRef : undefined;
-                return (
-                  <Fragment key={id}>
-                    <Tr data-testid={`event-${id}`} className={`${viewEvent === id ? 'border-none' : ''}`}>
+              {/*  <Tr data-testid={`event-${id}`} className={`${viewEvent === id ? 'border-none' : ''}`}>
                       <Td className="w-40">
                         <a
                           onClick={() => viewEventHandler(id)}
@@ -219,20 +251,10 @@ export default function Events({ path: pathname, limit = API_LIMIT } = {}) {
                           <Event eventId={id} close={() => setViewEvent(null)} scrollRef={scrollToRef} />
                         </Td>
                       </Tr>
-                    ) : null}
-                  </Fragment>
-                );
-              }
-            )}
-          </Tbody>
-          <Tfoot>
-            <Tr>
-              <Td className="text-center p-4" colSpan="8">
-                {status === FetchStatus.LOADING ? <ActivityIndicator /> : reachedEnd ? 'No more events' : null}
-              </Td>
-            </Tr>
-          </Tfoot>
-        </Table>
+                    ) : null} */}
+            </Fragment>
+          );
+        })}
       </div>
     </div>
   );

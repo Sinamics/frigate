@@ -9,6 +9,16 @@ module.exports = {
         '2xl': '1536px',
         '3xl': '1720px',
       },
+      colors: {
+        // Configure your color palette here
+        transparent: 'transparent',
+        current: 'currentColor',
+        primary: {
+          light: '#E3E2E2',
+          DEFAULT: '#E3E2E2',
+          dark: '#1C1B1B',
+        },
+      },
     },
     boxShadow: {
       sm: '0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)',
@@ -19,16 +29,6 @@ module.exports = {
       '2xl': '0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)',
       '3xl': '',
       none: '',
-    },
-    colors: {
-      // Configure your color palette here
-      transparent: 'transparent',
-      current: 'currentColor',
-      primary: {
-        light: '#E3E2E2',
-        DEFAULT: '#E3E2E2',
-        dark: '#1C1B1B',
-      },
     },
   },
   variants: {

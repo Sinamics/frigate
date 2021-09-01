@@ -30,6 +30,10 @@
   position: static !important;
 }
 
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
 /*
 Event.js
 Maintain aspect ratio and scale down the video container
@@ -37,4 +41,27 @@ Could not find a proper tailwind css.
 */
 .outer-max-width {
   max-width: 60%;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #1b1d1f;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #949494;
+  border-radius: 100vh;
+  border: 1px solid #acadad;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
 }

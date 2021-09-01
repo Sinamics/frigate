@@ -37,17 +37,17 @@ export default function AppBar({ title: Title, overflowRef, onOverflowClick }) {
 
   return (
     <div
-      className={`w-full border-b border-gray-200 dark:border-gray-700 flex items-center align-middle p-2  fixed left-0 right-0 z-10 bg-white dark:bg-gray-900 transform transition-all duration-200 ${
-        !show ? '-translate-y-full' : 'translate-y-0'
-      } ${!atZero ? 'shadow-sm' : ''}`}
+      className={`w-full h-10 border-b border-gray-200 dark:border-gray-700 z-10 bg-primary-light dark:bg-primary-dark ${
+        !atZero ? 'shadow-sm' : ''
+      }`}
       data-testid="appbar"
     >
       <div className="lg:hidden">
-        <Button color="black" className="rounded-full w-10 h-10" onClick={handleShowDrawer} type="text">
-          <MenuIcon className="w-10 h-10" />
+        <Button color="black" className="rounded-full w-5 h-5" onClick={handleShowDrawer} type="text">
+          <MenuIcon className="w-5 h-5" />
         </Button>
       </div>
-      <Title />
+
       <div className="flex-grow-1 flex justify-end w-full">
         {overflowRef && onOverflowClick ? (
           <div className="w-auto" ref={overflowRef}>
@@ -58,7 +58,7 @@ export default function AppBar({ title: Title, overflowRef, onOverflowClick }) {
               onClick={onOverflowClick}
               type="text"
             >
-              <MoreIcon className="w-10 h-10" />
+              <MoreIcon className="w-0 h-0" />
             </Button>
           </div>
         ) : null}
