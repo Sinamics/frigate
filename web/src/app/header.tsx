@@ -1,17 +1,17 @@
 import { h, Fragment } from 'preact';
-import BaseAppBar from './components/AppBar';
-import LinkedLogo from './components/LinkedLogo';
-import Menu, { MenuItem, MenuSeparator } from './components/Menu';
-import AutoAwesomeIcon from './icons/AutoAwesome';
-import LightModeIcon from './icons/LightMode';
-import DarkModeIcon from './icons/DarkMode';
-import FrigateRestartIcon from './icons/FrigateRestart';
-import Dialog from './components/Dialog';
-import { useDarkMode } from './context';
+import BaseAppBar from '../components/AppBar';
+import LinkedLogo from '../components/LinkedLogo';
+import Menu, { MenuItem, MenuSeparator } from '../components/Menu';
+import AutoAwesomeIcon from '../icons/AutoAwesome';
+import LightModeIcon from '../icons/LightMode';
+import DarkModeIcon from '../icons/DarkMode';
+import FrigateRestartIcon from '../icons/FrigateRestart';
+import Dialog from '../components/Dialog';
+import { useDarkMode } from '../context';
 import { useCallback, useRef, useState } from 'preact/hooks';
-import { useRestart } from './api/mqtt';
+import { useRestart } from '../api/mqtt';
 
-export default function AppBar() {
+const Header = () => {
   const [showMoreMenu, setShowMoreMenu] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
   const [showDialogWait, setShowDialogWait] = useState(false);
@@ -19,7 +19,7 @@ export default function AppBar() {
   const { send: sendRestart } = useRestart();
 
   const handleSelectDarkMode = useCallback(
-    (value, label) => {
+    (value) => {
       setDarkMode(value);
       setShowMoreMenu(false);
     },
@@ -83,4 +83,5 @@ export default function AppBar() {
       ) : null}
     </Fragment>
   );
-}
+};
+export default Header;

@@ -15,19 +15,16 @@ const Sidebar = ({ children }) => {
   const cameras = useMemo(() => Object.entries(config.cameras), [config]);
 
   return (
-    <Fragment>
-      <ScrollMenu header={<Header />}>
-        <Events />
-      </ScrollMenu>
-
-      {children}
-    </Fragment>
+    <div className="border border-gray-600 w-56 h-screen overflow-hidden">
+      <Header />
+      <Events />
+    </div>
   );
 };
 
 const Header = memo(() => {
   return (
-    <div className="text-gray-500">
+    <div className="text-gray-500 flex items-center justify-center border-b p-1 border-gray-600">
       <LinkedLogo />
     </div>
   );

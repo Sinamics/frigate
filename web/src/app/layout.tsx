@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { h, FunctionalComponent, JSX } from 'preact';
 import ActivityIndicator from '../components/ActivityIndicator';
-import { Suspense } from 'preact/compat';
+
 import { FetchStatus, useConfig } from '../api';
 import Sidebar from '../Sidebar';
-import AppBar from '../AppBar';
+import Header from './header';
 
 interface LayoutProps {
   children: JSX.Element;
@@ -13,20 +13,22 @@ interface LayoutProps {
 export const LayoutPublic: FunctionalComponent<LayoutProps> = (props): JSX.Element => {
   const { status }: any = useConfig();
   return (
-    <Suspense fallback={<ActivityIndicator />}>
-      <div data-testid="app" className="w-full">
-        {status !== FetchStatus.LOADED ? (
-          <div className="flex flex-grow-1 min-h-screen justify-center items-center">
-            <ActivityIndicator />
-          </div>
-        ) : (
-          <div className="flex w-full bg-primary-light dark:bg-primary-dark text-gray-900 dark:text-white">
-            <Sidebar />
-            <AppBar />
-            <div>{props.children}</div>
-          </div>
-        )}
-      </div>
-    </Suspense>
+    <div
+      data-testid="app"
+      className="flex relative min-h-screen md:flex bg-primary-light dark:bg-primary-dark text-gray-900 dark:text-white"
+    >
+      <Sidebar />
+
+      {status !== FetchStatus.LOADED ? (
+        <div className="flex flex-grow-1 min-h-screen justify-center items-center">
+          <ActivityIndicator />
+        </div>
+      ) : (
+        <div className="flex-1">
+          <Header />
+          <div className="m-5">{props.children}</div>
+        </div>
+      )}
+    </div>
   );
 };

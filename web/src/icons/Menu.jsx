@@ -2,6 +2,7 @@ import { h } from 'preact';
 import { memo } from 'preact/compat';
 
 export function Menu({ className = '' }) {
+  console.log(className);
   return (
     <svg className={`fill-current ${className}`} viewBox="0 0 24 24">
       <path d="M0 0h24v24H0z" fill="none" />
