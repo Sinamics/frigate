@@ -5,7 +5,7 @@ import ActivityIndicator from '../components/ActivityIndicator';
 import { FetchStatus, useConfig } from '../api';
 import Sidebar from '../Sidebar';
 import Header from './header';
-
+import Timeline from '../components/Timeline';
 interface LayoutProps {
   children: JSX.Element;
 }
@@ -15,7 +15,7 @@ export const LayoutPublic: FunctionalComponent<LayoutProps> = (props): JSX.Eleme
   return (
     <div
       data-testid="app"
-      className="flex relative min-h-screen md:flex bg-primary-light dark:bg-primary-dark text-gray-900 dark:text-white"
+      className="min-h-screen md:flex bg-primary-light dark:bg-primary-dark text-gray-900 dark:text-white"
     >
       <Sidebar />
 
@@ -27,6 +27,7 @@ export const LayoutPublic: FunctionalComponent<LayoutProps> = (props): JSX.Eleme
         <div className="flex-1">
           <Header />
           <div className="m-5">{props.children}</div>
+          <Timeline />
         </div>
       )}
     </div>

@@ -18,6 +18,11 @@ module.exports = {
           DEFAULT: '#E3E2E2',
           dark: '#1C1B1B',
         },
+        secondary: {
+          light: '#5452dead',
+          DEFAULT: '#5452dead',
+          dark: '#5452dead',
+        },
       },
     },
     boxShadow: {

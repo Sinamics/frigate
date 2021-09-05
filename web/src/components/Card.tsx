@@ -32,14 +32,19 @@ const Box: FunctionalComponent<IBox> = ({
     : 'border border-gray-200 dark:border-gray-700';
 
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-lg overflow-hidden ${typeClasses} ${className}`}>
-      {media || header ? (
-        <Element href={href} {...props}>
-          {media}
-          <div className="p-4 pb-2">{header ? <Heading size="base">{header}</Heading> : null}</div>
-        </Element>
-      ) : null}
-      {buttons.length || content || icons.length ? (
+    <div className="border border-gray-600">
+      <div className="border-b border-gray-600 bg-gradient-to-b from-gray-700 text-xs tracking-wider">
+        {/* Top header here  */}
+        <p>{header}</p>
+      </div>
+      <div className={`bg-white dark:bg-gray-800 overflow-hidden ${typeClasses} ${className}`}>
+        {media || header ? (
+          <Element {...props}>
+            {media}
+            {/* <div className="p-4 pb-2">{header ? <Heading size="base">{header}</Heading> : null}</div> */}
+          </Element>
+        ) : null}
+        {/* {buttons.length || content || icons.length ? (
         <div className="px-4 pb-2">
           {content || null}
           {buttons.length ? (
@@ -58,7 +63,8 @@ const Box: FunctionalComponent<IBox> = ({
             </div>
           ) : null}
         </div>
-      ) : null}
+      ) : null} */}
+      </div>
     </div>
   );
 };

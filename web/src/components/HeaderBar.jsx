@@ -6,12 +6,13 @@ import { useDrawer } from '../context';
 import { useLayoutEffect, useCallback, useState } from 'preact/hooks';
 import ClipIcon from '../icons/Clip';
 import SnapShotIcon from '../icons/Snapshot';
-
+import Settings from '../icons/Settings';
+import Debug from '../icons/Debug';
 // We would typically preserve these in component state
 // But need to avoid too many re-renders
 let lastScrollY = window.scrollY;
 
-export default function AppBar({ title: Title, overflowRef, onOverflowClick }) {
+export default function HeaderBar({ title: Title, overflowRef, onOverflowClick }) {
   const [show, setShow] = useState(true);
   const [atZero, setAtZero] = useState(window.scrollY === 0);
   const { setShowDrawer } = useDrawer();
@@ -38,22 +39,21 @@ export default function AppBar({ title: Title, overflowRef, onOverflowClick }) {
   }, [setShowDrawer]);
 
   return (
-    <div
-      className={`flex border-t border-b border-gray-200 dark:border-gray-700 z-10 bg-primary-light dark:bg-primary-dark`}
-      data-testid="appbar"
-    >
+    <div className={`flex z-10 bg-secondary-light dark:bg-gray-800`} data-testid="appbar">
       <div className="lg:hidden">
         <Button color="black" className="rounded-full w-12 h-12" onClick={handleShowDrawer} type="text">
           <MenuIcon className="w-10 h-10" />
         </Button>
       </div>
-      <div className="flex-grow-1 flex justify-start items-center ml-1 w-full ">
+      <div className="flex justify-start items-center ml-1 w-full ">
         <div className="w-5 h-5 flex flex-1 space-x-1">
+          <Settings className="hover:text-blue-300 cursor-pointer " />
           <ClipIcon className="hover:text-blue-300 cursor-pointer " />
           <SnapShotIcon className="hover:text-blue-300 cursor-pointer " />
+          <Debug className="hover:text-blue-300 cursor-pointer " />
         </div>
       </div>
-      <div className="flex-grow-1 flex justify-end w-full ">
+      <div className="flex justify-end w-full ">
         {overflowRef && onOverflowClick ? (
           <div className="w-auto" ref={overflowRef}>
             <Button

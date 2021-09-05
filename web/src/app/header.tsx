@@ -1,5 +1,5 @@
 import { h, Fragment } from 'preact';
-import BaseAppBar from '../components/AppBar';
+import HeaderBar from '../components/HeaderBar';
 import LinkedLogo from '../components/LinkedLogo';
 import Menu, { MenuItem, MenuSeparator } from '../components/Menu';
 import AutoAwesomeIcon from '../icons/AutoAwesome';
@@ -53,7 +53,7 @@ const Header = () => {
 
   return (
     <Fragment>
-      <BaseAppBar title={LinkedLogo} overflowRef={moreRef} onOverflowClick={handleShowMenu} />
+      <HeaderBar title={LinkedLogo} overflowRef={moreRef} onOverflowClick={handleShowMenu} />
       {showMoreMenu ? (
         <Menu onDismiss={handleDismissMoreMenu} relativeTo={moreRef}>
           <MenuItem icon={AutoAwesomeIcon} label="Auto dark mode" value="media" onSelect={handleSelectDarkMode} />

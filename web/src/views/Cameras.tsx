@@ -1,4 +1,4 @@
-import { h, FunctionalComponent } from 'preact';
+import { h, FunctionalComponent, Fragment } from 'preact';
 import ActivityIndicator from '../components/ActivityIndicator';
 import Card from '../components/Card';
 import CameraImage from '../components/CameraImage';
@@ -16,15 +16,25 @@ interface ICamera {
 
 const Cameras: FunctionalComponent<ICamera> = () => {
   const { data: config, status } = useConfig();
+  const [firstcam, firstConfig] = Object.entries(config.cameras)[0];
 
   return status !== FetchStatus.LOADED ? (
     <ActivityIndicator />
   ) : (
-    <div className="grid grid-cols-1 3xl:grid-cols-3 md:grid-cols-2 gap-4">
-      {Object.entries(config.cameras).map(([camera, conf]) => (
-        <Camera name={camera} conf={conf} />
-      ))}
-    </div>
+    <Fragment>
+      <div className="grid grid-rows-3 grid-cols-3 grid-flow-col gap-4">
+        <div className="row-span-3 col-span-2">
+          <Camera name={firstcam} conf={firstConfig} />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 row-auto col-auto gap-4">
+          {Object.entries(config.cameras).map(([camera, conf]) => (
+            <div className="">
+              <Camera name={camera} conf={conf} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </Fragment>
   );
 };
 export default Cameras;

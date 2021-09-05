@@ -15,7 +15,7 @@ const Sidebar = ({ children }) => {
   const cameras = useMemo(() => Object.entries(config.cameras), [config]);
 
   return (
-    <div className="border border-gray-600 w-56 h-screen overflow-hidden">
+    <div className="border-r border-gray-600 border-gray-200 w-56 h-screen overflow-hidden ">
       <Header />
       <Events />
     </div>
@@ -24,7 +24,7 @@ const Sidebar = ({ children }) => {
 
 const Header = memo(() => {
   return (
-    <div className="text-gray-500 flex items-center justify-center border-b p-1 border-gray-600">
+    <div className="bg-secondary-light dark:bg-gray-800 text-gray-500 flex items-center justify-center p-1 ">
       <LinkedLogo />
     </div>
   );
