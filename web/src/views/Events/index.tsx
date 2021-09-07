@@ -122,7 +122,7 @@ export default function Events({ path: pathname, limit = API_LIMIT } = {}) {
           return (
             <Fragment key={id}>
               {onEventHover.id === id ? <PlayOnHover apiHost={apiHost} onEventHover={onEventHover} /> : null}
-              <div className="grid items-center" id={id} onMouseEnter={onMouseEnter}>
+              <div className="grid items-center hover:bg-gray-700" id={id} onMouseEnter={onMouseEnter}>
                 <div className="p-1 flex items-center space-x-2 rounded-lg shadow-md hover:scale-105 transition transform duration-100 cursor-pointer">
                   <div>
                     <img

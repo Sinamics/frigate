@@ -55,31 +55,44 @@ const Timeline: FunctionalComponent<IBox> = ({
   const timStart = time[0].time;
   const timEnd = time[time.length - 1].time;
   const [{ events, reachedEnd, searchStrings, deleted }, dispatch] = useReducer(reducer, initialState);
-
-  const { data, status, deletedId } = useEvents();
+  const apiHost = useApiHost();
+  const { data, status, deletedId } = useEvents(`include_thumbnails=0&limit=25`);
   // const timeDistance = timEnd - timStart;
   // const nP = timeDistance / time.length;
   // console.log(nP);
 
-  const minTime = data && Math.min(...data.map((f) => new Date(f.start_time).getTime()));
-  const maxTime = data && Math.max(...data.map((f) => new Date(f.start_time).getTime()));
+  const minTime = data && Math.min(...data.map((f) => new Date(f.start_time * 1000)));
+  const maxTime = data && Math.max(...data.map((f) => new Date(f.start_time * 1000)));
 
   let deviation = maxTime - minTime;
-  let multiplier = 100 / deviation;
 
-  // console.log(maxTime);
   return (
     <footer className="footerTimeline flex absolute bottom-0 h-16 sm:h-20 m-0 p-0 border-t">
       <div className={`relative flex-1 bg-white dark:bg-gray-800 overflow-hidden text-center`}>
-        {/* Timeline  */}
-        <p>Timeline goes here</p>
         {data &&
           data.map((prop, idx) => {
-            let s = prop.start_time - minTime;
-            console.log(multiplier * prop.start_time);
-            // console.log(Math.floor(multiplier * s));
-            // console.log(prop.start_time - (minTime / 100) * deviation);
-            return <span style={{ position: 'absolute', left: Math.floor(multiplier * s) + '%' }}>T</span>;
+            var today = new Date(prop.start_time * 1000);
+            let g = new Date(prop.start_time * 1000) - minTime;
+            var time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+            return (
+              <span className="">
+                <span
+                  className="border-b-2  border-yellow-500"
+                  style={{ position: 'absolute', top: 0, left: Math.floor((g / deviation) * 100) + '%' }}
+                >
+                  <span style={{ fontSize: 9 }}>{time}</span>
+                  <img
+                    width="60"
+                    src={
+                      prop.has_snapshot
+                        ? `${apiHost}/clips/${prop.camera}-${prop.id}.jpg`
+                        : `prop:image/jpeg;base64,${prop.thumbnail}`
+                    }
+                    alt={`${prop.label} at ${(prop.top_score * 100).toFixed(1)}% confidence`}
+                  />
+                </span>
+              </span>
+            );
           })}
       </div>
     </footer>

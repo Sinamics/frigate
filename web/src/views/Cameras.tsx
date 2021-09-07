@@ -16,7 +16,7 @@ interface ICamera {
 
 const Cameras: FunctionalComponent<ICamera> = () => {
   const { data: config, status } = useConfig();
-  const [firstcam, firstConfig] = Object.entries(config.cameras)[0];
+  const [firstcam, firstConfig] = Object.entries(config.cameras)[1];
 
   return status !== FetchStatus.LOADED ? (
     <ActivityIndicator />
