@@ -3,15 +3,15 @@ import Button from './Button';
 import Heading from './Heading';
 
 interface IBox {
-  className: string;
-  content: string;
-  elevated: boolean;
+  className?: string;
+  content?: string;
+  elevated?: boolean;
   buttons: any;
   href: any;
   header: any;
   icons: any;
   media: any;
-  stretch: any;
+  stretch?: any;
 }
 
 const Box: FunctionalComponent<IBox> = ({

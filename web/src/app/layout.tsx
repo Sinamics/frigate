@@ -11,6 +11,7 @@ interface LayoutProps {
 }
 
 export const LayoutPublic: FunctionalComponent<LayoutProps> = (props): JSX.Element => {
+  // console.log(props);
   const { status }: any = useConfig();
   return (
     <div

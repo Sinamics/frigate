@@ -18,6 +18,8 @@ const API_LIMIT = 25;
 const initialState = Object.freeze({ events: [], reachedEnd: false, searchStrings: {}, deleted: 0 });
 
 const defaultSearchString = (limit) => `include_thumbnails=0&limit=${limit}`;
+let viewEventTimeout = 0;
+
 function removeDefaultSearchKeys(searchParams) {
   searchParams.delete('limit');
   searchParams.delete('include_thumbnails');
@@ -86,12 +88,23 @@ export default function Events({ path: pathname, limit = API_LIMIT } = {}) {
     //Set event id to be rendered.
     setViewEvent(id);
   };
-  const onMouseEnter = (e) => {
-    setOnEventHover({ id: null });
-    setOnEventHover({ id: e.currentTarget.id });
+
+  const onMouseEnter = (e: any) => {
+    if (viewEventTimeout) clearTimeout(viewEventTimeout);
+    const viewId = e.currentTarget.id;
+
+    viewEventTimeout = setTimeout(() => {
+      setOnEventHover({ id: null });
+      setOnEventHover({ id: viewId });
+    }, 300);
   };
+  const onMouseLeave = () => {
+    clearTimeout(viewEventTimeout);
+    setOnEventHover({ id: null });
+  };
+
   const searchParams = useMemo(() => new URLSearchParams(searchString), [searchString]);
-  console.log(viewEvent);
+
   return (
     <Fragment>
       <p className="text-center text-sm font-bold mt-3">Events</p>
@@ -122,7 +135,12 @@ export default function Events({ path: pathname, limit = API_LIMIT } = {}) {
           return (
             <Fragment key={id}>
               {onEventHover.id === id ? <PlayOnHover apiHost={apiHost} onEventHover={onEventHover} /> : null}
-              <div className="grid items-center hover:bg-gray-700" id={id} onMouseEnter={onMouseEnter}>
+              <div
+                className="grid items-center hover:bg-gray-700"
+                id={id}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+              >
                 <div className="p-1 flex items-center space-x-2 rounded-lg shadow-md hover:scale-105 transition transform duration-100 cursor-pointer">
                   <div>
                     <img

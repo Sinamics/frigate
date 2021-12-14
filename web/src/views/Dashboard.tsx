@@ -14,9 +14,9 @@ interface ICamera {
   default: boolean;
 }
 
-const Cameras: FunctionalComponent<ICamera> = () => {
+const Dashboard: FunctionalComponent<ICamera> = () => {
   const { data: config, status } = useConfig();
-  const [firstcam, firstConfig] = Object.entries(config.cameras)[1];
+  const [firstcam, firstConfig] = Object.entries(config.cameras)[0];
 
   return status !== FetchStatus.LOADED ? (
     <ActivityIndicator />
@@ -37,7 +37,7 @@ const Cameras: FunctionalComponent<ICamera> = () => {
     </Fragment>
   );
 };
-export default Cameras;
+export default Dashboard;
 
 interface ICameras {
   name: string;
