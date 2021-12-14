@@ -75,9 +75,9 @@ const Button: FunctionalComponent<IButton> = ({
   const [hovered, setHovered] = useState(false);
   const ref = useRef();
 
-  let classes = `whitespace-nowrap flex items-center space-x-1 ${className} ${ButtonTypes[type]} ${
+  let classes = `whitespace-nowrap flex items-center px-1.5 md:px-1 py-1  space-x-1 ${className} ${ButtonTypes[type]} ${
     ButtonColors[disabled ? 'disabled' : color][type]
-  } font-sans inline-flex font-bold uppercase text-xs px-1.5 md:px-2 py-2 rounded outline-none focus:outline-none ring-opacity-50 transition-shadow transition-colors ${
+  } font-sans inline-flex font-bold uppercase text-xs rounded outline-none focus:outline-none ring-opacity-50 transition-shadow transition-colors ${
     disabled ? 'cursor-not-allowed' : 'focus:ring-2 cursor-pointer'
   }`;
 

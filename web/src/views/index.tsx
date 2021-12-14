@@ -9,7 +9,7 @@ export const getCamera = async (url, cb, props) => {
 };
 
 export const getCameras = async (url, cb, props) => {
-  const module = await import('./Cameras.jsx');
+  const module = await import('./Dashboard.jsx');
   return module.default;
 };
 

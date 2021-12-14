@@ -33,9 +33,16 @@ const Box: FunctionalComponent<IBox> = ({
 
   return (
     <div className="border border-gray-600">
-      <div className="border-b border-gray-600 bg-gradient-to-b from-gray-700 text-xs tracking-wider">
+      <div className="border-b border-gray-600 bg-gradient-to-b from-gray-700 text-xs tracking-wider flex justify-between">
         {/* Top header here  */}
-        <p>{header}</p>
+        <div className="pl-1 flex items-center">{header}</div>
+        <div className="text-right">
+          {icons.map(({ name, icon: Icon, ...props }: any) => (
+            <Button aria-label={name} className="py-0 rounded-full" key={name} type="text" {...props}>
+              <Icon className="w-4" />
+            </Button>
+          ))}
+        </div>
       </div>
       <div className={`bg-white dark:bg-gray-800 overflow-hidden ${typeClasses} ${className}`}>
         {media || header ? (
