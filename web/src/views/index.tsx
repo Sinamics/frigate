@@ -23,8 +23,13 @@ export const getBirdseye = async (url, cb, props) => {
   return module.default;
 };
 
+<<<<<<< HEAD:web/src/views/index.tsx
 export const getEvents = async (url, cb, props) => {
   const module = await import('./Events.jsx');
+=======
+export async function getEvents(url, cb, props) {
+  const module = await import('./Events');
+>>>>>>> release-0.10.0:web/src/routes/index.js
   return module.default;
 };
 
