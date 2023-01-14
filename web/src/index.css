@@ -8,6 +8,16 @@
   animation: spinner 0.75s linear infinite;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-thumb {
+  background: #cccccc;
+}
+
 @-webkit-keyframes spinner {
   0% {
     -webkit-transform: rotate(0deg);
