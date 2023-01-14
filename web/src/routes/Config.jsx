@@ -58,9 +58,9 @@ export default function Config() {
 
     let yamlModel;
     if (editor.getModels().length > 0) {
-      yamlModel = editor.getModel(modelUri)
+      yamlModel = editor.getModel(modelUri);
     } else {
-      yamlModel = editor.createModel(config, 'yaml', modelUri)
+      yamlModel = editor.createModel(config, 'yaml', modelUri);
     }
 
     setDiagnosticsOptions({
@@ -80,33 +80,34 @@ export default function Config() {
     window.editor = editor.create(document.getElementById('container'), {
       language: 'yaml',
       model: yamlModel,
-      scrollBeyondLastLine: false,
+      scrollBeyondLastLine: true,
       theme: 'vs-dark',
     });
   });
 
-  if (!config) {
-    return <ActivityIndicator />;
-  }
-
-  return (
-    <div className="space-y-4 p-2 px-4 h-full">
-      <div className="flex justify-between">
-        <Heading>Config</Heading>
-        <div>
-          <Button className="mx-2" onClick={(e) => handleCopyConfig(e)}>
-            Copy Config
-          </Button>
-          <Button className="mx-2" onClick={(e) => onHandleSaveConfig(e)}>
-            Save & Restart
-          </Button>
-        </div>
-      </div>
-
-      {success && <div className="max-h-20 text-green-500">{success}</div>}
-      {error && <div className="p-4 overflow-scroll text-red-500 whitespace-pre-wrap">{error}</div>}
-
-      <div id="container" className="h-full" />
+  return !config ? (
+    <div className="h-screen flex flex-grow-1 justify-center items-center">
+      <ActivityIndicator />
     </div>
+  ) : (
+    <>
+      <div className="space-y-4 p-2 px-4">
+        <div className="flex justify-between">
+          <Heading>Config</Heading>
+          <div>
+            <Button className="mx-2" onClick={(e) => handleCopyConfig(e)}>
+              Copy Config
+            </Button>
+            <Button className="mx-2" onClick={(e) => onHandleSaveConfig(e)}>
+              Save & Restart
+            </Button>
+          </div>
+        </div>
+
+        {success && <div className="max-h-20 text-green-500">{success}</div>}
+        {error && <div className="p-4 overflow-scroll text-red-500 whitespace-pre-wrap">{error}</div>}
+      </div>
+      <div id="container" className="overflow-y-auto h-full" />
+    </>
   );
 }
