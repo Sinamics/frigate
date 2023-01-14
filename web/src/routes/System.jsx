@@ -79,7 +79,7 @@ export default function System() {
   };
 
   return (
-    <div className="space-y-4 p-2 px-4">
+    <div className="space-y-4 p-2 px-4 flex flex-col h-full overflow-y-auto">
       <Heading>
         System <span className="text-sm">{service.version}</span>
       </Heading>
@@ -127,7 +127,7 @@ export default function System() {
       )}
 
       {!detectors ? (
-        <div>
+        <div className="h-screen flex flex-grow-1 justify-center items-center">
           <ActivityIndicator />
         </div>
       ) : (
@@ -247,7 +247,9 @@ export default function System() {
                           <Td>{cameras[camera]['pid'] || '- '}</Td>
 
                           {cameras[camera]['detection_enabled'] == 1 ? (
-                            <Td>{cameras[camera]['detection_fps']} ({cameras[camera]['skipped_fps']} skipped)</Td>
+                            <Td>
+                              {cameras[camera]['detection_fps']} ({cameras[camera]['skipped_fps']} skipped)
+                            </Td>
                           ) : (
                             <Td>disabled</Td>
                           )}

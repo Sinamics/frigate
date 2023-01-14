@@ -19,7 +19,11 @@ export default function Storage() {
   const { service } = stats || initialStats || emptyObject;
 
   if (!service || !storage) {
-    return <ActivityIndicator />;
+    return (
+      <div className="h-screen flex flex-grow-1 justify-center items-center">
+        <ActivityIndicator />
+      </div>
+    );
   }
 
   let storage_usage;
@@ -54,7 +58,7 @@ export default function Storage() {
   }
 
   return (
-    <div className="space-y-4 p-2 px-4">
+    <div className="space-y-4 p-2 px-4 flex flex-col h-full overflow-y-auto">
       <Heading>Storage</Heading>
 
       <Fragment>
