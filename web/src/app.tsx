@@ -17,15 +17,15 @@ export default function App() {
     <DarkModeProvider>
       <DrawerProvider>
         <div data-testid="app" className="w-full">
-          <AppBar />
           {!config ? (
-            <div className="flex flex-grow-1 min-h-screen justify-center items-center">
+            <div className="h-screen flex flex-grow-1 justify-center items-center">
               <ActivityIndicator />
             </div>
           ) : (
-            <div className="flex flex-row min-h-screen w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+            <div className="flex flex-row">
               <Sidebar />
-              <div className="w-full flex-auto mt-16 min-w-0">
+              <div className="w-full h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+                <AppBar />
                 <Router>
                   <AsyncRoute path="/cameras/:camera/editor" getComponent={Routes.getCameraMap} />
                   <AsyncRoute path="/cameras/:camera" getComponent={cameraComponent} />
