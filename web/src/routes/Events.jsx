@@ -292,190 +292,202 @@ export default function Events({ path, ...props }) {
   };
 
   if (!config) {
-    return <ActivityIndicator />;
+    <div className="h-screen flex flex-grow-1 justify-center items-center">
+      <ActivityIndicator />
+    </div>;
   }
 
   const timezone = config.ui?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   return (
-    <div className="space-y-4 p-2 px-4 w-full">
-      <Heading>Events</Heading>
-      <div className="flex flex-wrap gap-2 items-center">
-        <MultiSelect
-          className="basis-1/5 cursor-pointer rounded dark:bg-slate-800"
-          title="Cameras"
-          options={filterValues.cameras}
-          selection={searchParams.cameras}
-          onToggle={(item) => onToggleNamedFilter('cameras', item)}
-          onShowAll={() => onFilter('cameras', ['all'])}
-          onSelectSingle={(item) => onFilter('cameras', item)}
-        />
-        <MultiSelect
-          className="basis-1/5 cursor-pointer rounded dark:bg-slate-800"
-          title="Labels"
-          options={filterValues.labels}
-          selection={searchParams.labels}
-          onToggle={(item) => onToggleNamedFilter('labels', item)}
-          onShowAll={() => onFilter('labels', ['all'])}
-          onSelectSingle={(item) => onFilter('labels', item)}
-        />
-        <MultiSelect
-          className="basis-1/5 cursor-pointer rounded dark:bg-slate-800"
-          title="Zones"
-          options={filterValues.zones}
-          selection={searchParams.zones}
-          onToggle={(item) => onToggleNamedFilter('zones', item)}
-          onShowAll={() => onFilter('zones', ['all'])}
-          onSelectSingle={(item) => onFilter('zones', item)}
-        />
-        {filterValues.sub_labels.length > 0 && (
+    <>
+      <div className="p-2 w-full">
+        <div className="flex flex-wrap gap-3 items-center p-3">
           <MultiSelect
             className="basis-1/5 cursor-pointer rounded dark:bg-slate-800"
-            title="Sub Labels"
-            options={filterValues.sub_labels}
-            selection={searchParams.sub_labels}
-            onToggle={(item) => onToggleNamedFilter('sub_labels', item)}
-            onShowAll={() => onFilter('sub_labels', ['all'])}
-            onSelectSingle={(item) => onFilter('sub_labels', item)}
+            title="Cameras"
+            options={filterValues.cameras}
+            selection={searchParams.cameras}
+            onToggle={(item) => onToggleNamedFilter('cameras', item)}
+            onShowAll={() => onFilter('cameras', ['all'])}
+            onSelectSingle={(item) => onFilter('cameras', item)}
           />
-        )}
-
-        <StarRecording
-          className="h-10 w-10 text-yellow-300 cursor-pointer ml-auto"
-          onClick={() => onFilter('favorites', searchParams.favorites ? 0 : 1)}
-          fill={searchParams.favorites == 1 ? 'currentColor' : 'none'}
-        />
-
-        <div ref={datePicker} className="ml-right">
-          <CalendarIcon
-            className="h-8 w-8 cursor-pointer"
-            onClick={() => setState({ ...state, showDatePicker: true })}
+          <MultiSelect
+            className="basis-1/5 cursor-pointer rounded dark:bg-slate-800"
+            title="Labels"
+            options={filterValues.labels}
+            selection={searchParams.labels}
+            onToggle={(item) => onToggleNamedFilter('labels', item)}
+            onShowAll={() => onFilter('labels', ['all'])}
+            onSelectSingle={(item) => onFilter('labels', item)}
           />
+          <MultiSelect
+            className="basis-1/5 cursor-pointer rounded dark:bg-slate-800"
+            title="Zones"
+            options={filterValues.zones}
+            selection={searchParams.zones}
+            onToggle={(item) => onToggleNamedFilter('zones', item)}
+            onShowAll={() => onFilter('zones', ['all'])}
+            onSelectSingle={(item) => onFilter('zones', item)}
+          />
+          {filterValues.sub_labels.length > 0 && (
+            <MultiSelect
+              className="basis-1/5 cursor-pointer rounded dark:bg-slate-800"
+              title="Sub Labels"
+              options={filterValues.sub_labels}
+              selection={searchParams.sub_labels}
+              onToggle={(item) => onToggleNamedFilter('sub_labels', item)}
+              onShowAll={() => onFilter('sub_labels', ['all'])}
+              onSelectSingle={(item) => onFilter('sub_labels', item)}
+            />
+          )}
+
+          <StarRecording
+            className="h-10 w-10 text-yellow-300 cursor-pointer ml-auto"
+            onClick={() => onFilter('favorites', searchParams.favorites ? 0 : 1)}
+            fill={searchParams.favorites == 1 ? 'currentColor' : 'none'}
+          />
+
+          <div ref={datePicker} className="ml-right">
+            <CalendarIcon
+              className="h-8 w-8 cursor-pointer"
+              onClick={() => setState({ ...state, showDatePicker: true })}
+            />
+          </div>
         </div>
-      </div>
-      {state.showDownloadMenu && (
-        <Menu onDismiss={() => setState({ ...state, showDownloadMenu: false })} relativeTo={downloadButton}>
-          {downloadEvent.has_snapshot && (
+        {state.showDownloadMenu && (
+          <Menu onDismiss={() => setState({ ...state, showDownloadMenu: false })} relativeTo={downloadButton}>
+            {downloadEvent.has_snapshot && (
+              <MenuItem
+                icon={Snapshot}
+                label="Download Snapshot"
+                value="snapshot"
+                href={`${apiHost}/api/events/${downloadEvent.id}/snapshot.jpg?download=true`}
+                download
+              />
+            )}
+            {downloadEvent.has_clip && (
+              <MenuItem
+                icon={Clip}
+                label="Download Clip"
+                value="clip"
+                href={`${apiHost}/api/events/${downloadEvent.id}/clip.mp4?download=true`}
+                download
+              />
+            )}
+            {downloadEvent.has_snapshot && !downloadEvent.plus_id && (
+              <MenuItem
+                icon={UploadPlus}
+                label={uploading.includes(downloadEvent.id) ? 'Uploading...' : 'Send to Frigate+'}
+                value="plus"
+                onSelect={() => onSendToPlus(downloadEvent.id)}
+              />
+            )}
+            {downloadEvent.plus_id && (
+              <MenuItem
+                icon={UploadPlus}
+                label={'Sent to Frigate+'}
+                value="plus"
+                onSelect={() => setState({ ...state, showDownloadMenu: false })}
+              />
+            )}
+          </Menu>
+        )}
+        {state.showDatePicker && (
+          <Menu
+            className="rounded-t-none"
+            onDismiss={() => setState({ ...state, setShowDatePicker: false })}
+            relativeTo={datePicker}
+          >
+            <MenuItem label="All" value={{ before: null, after: null }} onSelect={handleSelectDateRange} />
+            <MenuItem label="Today" value={{ before: null, after: daysAgo(0) }} onSelect={handleSelectDateRange} />
             <MenuItem
-              icon={Snapshot}
-              label="Download Snapshot"
-              value="snapshot"
-              href={`${apiHost}/api/events/${downloadEvent.id}/snapshot.jpg?download=true`}
-              download
+              label="Yesterday"
+              value={{ before: daysAgo(0), after: daysAgo(1) }}
+              onSelect={handleSelectDateRange}
             />
-          )}
-          {downloadEvent.has_clip && (
             <MenuItem
-              icon={Clip}
-              label="Download Clip"
-              value="clip"
-              href={`${apiHost}/api/events/${downloadEvent.id}/clip.mp4?download=true`}
-              download
+              label="Last 7 Days"
+              value={{ before: null, after: daysAgo(7) }}
+              onSelect={handleSelectDateRange}
             />
-          )}
-          {downloadEvent.has_snapshot && !downloadEvent.plus_id && (
             <MenuItem
-              icon={UploadPlus}
-              label={uploading.includes(downloadEvent.id) ? 'Uploading...' : 'Send to Frigate+'}
-              value="plus"
-              onSelect={() => onSendToPlus(downloadEvent.id)}
+              label="This Month"
+              value={{ before: null, after: monthsAgo(0) }}
+              onSelect={handleSelectDateRange}
             />
-          )}
-          {downloadEvent.plus_id && (
             <MenuItem
-              icon={UploadPlus}
-              label={'Sent to Frigate+'}
-              value="plus"
-              onSelect={() => setState({ ...state, showDownloadMenu: false })}
+              label="Last Month"
+              value={{ before: monthsAgo(0), after: monthsAgo(1) }}
+              onSelect={handleSelectDateRange}
             />
-          )}
-        </Menu>
-      )}
-      {state.showDatePicker && (
-        <Menu
-          className="rounded-t-none"
-          onDismiss={() => setState({ ...state, setShowDatePicker: false })}
-          relativeTo={datePicker}
-        >
-          <MenuItem label="All" value={{ before: null, after: null }} onSelect={handleSelectDateRange} />
-          <MenuItem label="Today" value={{ before: null, after: daysAgo(0) }} onSelect={handleSelectDateRange} />
-          <MenuItem
-            label="Yesterday"
-            value={{ before: daysAgo(0), after: daysAgo(1) }}
-            onSelect={handleSelectDateRange}
-          />
-          <MenuItem label="Last 7 Days" value={{ before: null, after: daysAgo(7) }} onSelect={handleSelectDateRange} />
-          <MenuItem label="This Month" value={{ before: null, after: monthsAgo(0) }} onSelect={handleSelectDateRange} />
-          <MenuItem
-            label="Last Month"
-            value={{ before: monthsAgo(0), after: monthsAgo(1) }}
-            onSelect={handleSelectDateRange}
-          />
-          <MenuItem
-            label="Custom Range"
-            value="custom"
-            onSelect={() => {
-              setState({ ...state, showCalendar: true, showDatePicker: false });
-            }}
-          />
-        </Menu>
-      )}
-      {state.showCalendar && (
-        <Menu
-          className="rounded-t-none"
-          onDismiss={() => setState({ ...state, showCalendar: false })}
-          relativeTo={datePicker}
-        >
-          <Calendar
-            onChange={handleSelectDateRange}
-            dateRange={{ before: searchParams.before * 1000 || null, after: searchParams.after * 1000 || null }}
-            close={() => setState({ ...state, showCalendar: false })}
-          />
-        </Menu>
-      )}
-      {state.showPlusConfig && (
-        <Dialog>
-          <div className="p-4">
-            <Heading size="lg">Setup a Frigate+ Account</Heading>
-            <p className="mb-2">In order to submit images to Frigate+, you first need to setup an account.</p>
-            <a
-              className="text-blue-500 hover:underline"
-              href="https://plus.frigate.video"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              https://plus.frigate.video
-            </a>
-          </div>
-          <div className="p-2 flex justify-start flex-row-reverse space-x-2">
-            <Button className="ml-2" onClick={() => setState({ ...state, showPlusConfig: false })} type="text">
-              Close
-            </Button>
-          </div>
-        </Dialog>
-      )}
-      {deleteFavoriteState.showDeleteFavorite && (
-        <Dialog>
-          <div className="p-4">
-            <Heading size="lg">Delete Saved Event?</Heading>
-            <p className="mb-2">Confirm deletion of saved event.</p>
-          </div>
-          <div className="p-2 flex justify-start flex-row-reverse space-x-2">
-            <Button
-              className="ml-2"
-              color="red"
-              onClick={(e) => {
-                setDeleteFavoriteState({ ...state, showDeleteFavorite: false });
-                onDelete(e, deleteFavoriteState.deletingFavoriteEventId, false);
+            <MenuItem
+              label="Custom Range"
+              value="custom"
+              onSelect={() => {
+                setState({ ...state, showCalendar: true, showDatePicker: false });
               }}
-              type="text"
-            >
-              Delete
-            </Button>
-          </div>
-        </Dialog>
-      )}
-      <div className="space-y-2">
+            />
+          </Menu>
+        )}
+        {state.showCalendar && (
+          <Menu
+            className="rounded-t-none"
+            onDismiss={() => setState({ ...state, showCalendar: false })}
+            relativeTo={datePicker}
+          >
+            <Calendar
+              onChange={handleSelectDateRange}
+              dateRange={{ before: searchParams.before * 1000 || null, after: searchParams.after * 1000 || null }}
+              close={() => setState({ ...state, showCalendar: false })}
+            />
+          </Menu>
+        )}
+        {state.showPlusConfig && (
+          <Dialog>
+            <div className="p-4">
+              <Heading size="lg">Setup a Frigate+ Account</Heading>
+              <p className="mb-2">In order to submit images to Frigate+, you first need to setup an account.</p>
+              <a
+                className="text-blue-500 hover:underline"
+                href="https://plus.frigate.video"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                https://plus.frigate.video
+              </a>
+            </div>
+            <div className="p-2 flex justify-start flex-row-reverse space-x-2">
+              <Button className="ml-2" onClick={() => setState({ ...state, showPlusConfig: false })} type="text">
+                Close
+              </Button>
+            </div>
+          </Dialog>
+        )}
+        {deleteFavoriteState.showDeleteFavorite && (
+          <Dialog>
+            <div className="p-4">
+              <Heading size="lg">Delete Saved Event?</Heading>
+              <p className="mb-2">Confirm deletion of saved event.</p>
+            </div>
+            <div className="p-2 flex justify-start flex-row-reverse space-x-2">
+              <Button
+                className="ml-2"
+                color="red"
+                onClick={(e) => {
+                  setDeleteFavoriteState({ ...state, showDeleteFavorite: false });
+                  onDelete(e, deleteFavoriteState.deletingFavoriteEventId, false);
+                }}
+                type="text"
+              >
+                Delete
+              </Button>
+            </div>
+          </Dialog>
+        )}
+      </div>
+
+      <div className="space-y-2 px-4 overflow-y-auto pb-10">
         {eventPages ? (
           eventPages.map((page, i) => {
             const lastPage = eventPages.length === i + 1;
@@ -616,7 +628,13 @@ export default function Events({ path, ...props }) {
           <ActivityIndicator />
         )}
       </div>
-      <div>{isDone ? null : <ActivityIndicator />}</div>
-    </div>
+      <div>
+        {size > 1 && isValidating ? (
+          <div className="fixed w-full bottom-5 left-0">
+            <ActivityIndicator />
+          </div>
+        ) : null}
+      </div>
+    </>
   );
 }
