@@ -1,9 +1,8 @@
 import { h, Fragment } from 'preact';
 import LinkedLogo from './components/LinkedLogo';
 import { Match } from 'preact-router/match';
-import { memo } from 'preact/compat';
 import { ENV } from './env';
-import { useMemo } from 'preact/hooks'
+import { useMemo } from 'preact/hooks';
 import useSWR from 'swr';
 import NavigationDrawer, { Destination, Separator } from './components/NavigationDrawer';
 
@@ -26,21 +25,13 @@ export default function Sidebar() {
   const { birdseye } = config;
 
   return (
-    <NavigationDrawer header={<Header />}>
+    <NavigationDrawer header={<LinkedLogo />}>
       <Destination href="/" text="Cameras" />
       <Match path="/cameras/:camera/:other?">
-        {({ matches }) =>
-          matches ? (
-            <CameraSection sortedCameras={sortedCameras} />
-          ) : null
-        }
+        {({ matches }) => (matches ? <CameraSection sortedCameras={sortedCameras} /> : null)}
       </Match>
       <Match path="/recording/:camera/:date?/:hour?/:seconds?">
-        {({ matches }) =>
-          matches ? (
-            <RecordingSection sortedCameras={sortedCameras} />
-          ) : null
-        }
+        {({ matches }) => (matches ? <RecordingSection sortedCameras={sortedCameras} /> : null)}
       </Match>
       {birdseye?.enabled ? <Destination href="/birdseye" text="Birdseye" /> : null}
       <Destination href="/events" text="Events" />
@@ -64,7 +55,6 @@ export default function Sidebar() {
 }
 
 function CameraSection({ sortedCameras }) {
-
   return (
     <Fragment>
       <Separator />
@@ -77,7 +67,6 @@ function CameraSection({ sortedCameras }) {
 }
 
 function RecordingSection({ sortedCameras }) {
-
   return (
     <Fragment>
       <Separator />
@@ -95,11 +84,3 @@ function RecordingSection({ sortedCameras }) {
     </Fragment>
   );
 }
-
-const Header = memo(() => {
-  return (
-    <div className="text-gray-500">
-      <LinkedLogo />
-    </div>
-  );
-});

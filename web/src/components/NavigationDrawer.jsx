@@ -21,11 +21,7 @@ export default function NavigationDrawer({ children, header }) {
         } transition-transform duration-300`}
         onClick={handleDismiss}
       >
-        {header ? (
-          <div className="flex-shrink-0 p-2 flex flex-row items-center justify-between border-b border-gray-200 dark:border-gray-700">
-            {header}
-          </div>
-        ) : null}
+        {header ? <div className="p-2 border-b border-gray-200 dark:border-gray-700 relative">{header}</div> : null}
 
         <nav className="flex flex-col flex-grow overflow-hidden overflow-y-auto p-2 space-y-2">{children}</nav>
       </div>
@@ -46,9 +42,8 @@ export function Destination({ className = '', href, text, ...other }) {
   }, [setShowDrawer]);
 
   const styleProps = {
-    [external
-      ? className
-      : 'class']: 'block p-2 text-sm font-semibold text-gray-900 rounded hover:bg-blue-500 dark:text-gray-200 hover:text-white dark:hover:text-white focus:outline-none ring-opacity-50 focus:ring-2 ring-blue-300',
+    [external ? className : 'class']:
+      'block p-2 text-sm font-semibold text-gray-900 rounded hover:bg-blue-500 dark:text-gray-200 hover:text-white dark:hover:text-white focus:outline-none ring-opacity-50 focus:ring-2 ring-blue-300',
   };
 
   const El = external ? 'a' : Link;
