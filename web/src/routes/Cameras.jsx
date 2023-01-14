@@ -13,10 +13,14 @@ export default function Cameras() {
   const { data: config } = useSWR('config');
 
   return !config ? (
-    <ActivityIndicator />
+    <div className="h-screen flex flex-grow-1 justify-center items-center">
+      <ActivityIndicator />
+    </div>
   ) : (
-    <div className="grid grid-cols-1 3xl:grid-cols-3 md:grid-cols-2 gap-4 p-2 px-4">
-      <SortedCameras unsortedCameras={config.cameras} />
+    <div className="overflow-y-auto hide-scroll">
+      <div className="grid grid-cols-1 3xl:grid-cols-3 md:grid-cols-2 gap-4 p-2 px-4">
+        <SortedCameras unsortedCameras={config.cameras} />
+      </div>
     </div>
   );
 }
@@ -50,10 +54,9 @@ function Camera({ name }) {
       { name: 'Recordings', href: `/recording/${name}` },
     ];
   }, [name]);
-  const cleanName = useMemo(
-    () => { return `${name.replaceAll('_', ' ')}` },
-    [name]
-  );
+  const cleanName = useMemo(() => {
+    return `${name.replaceAll('_', ' ')}`;
+  }, [name]);
   const icons = useMemo(
     () => [
       {
@@ -85,6 +88,12 @@ function Camera({ name }) {
   );
 
   return (
-    <Card buttons={buttons} href={href} header={cleanName} icons={icons} media={<CameraImage camera={name} stretch />} />
+    <Card
+      buttons={buttons}
+      href={href}
+      header={cleanName}
+      icons={icons}
+      media={<CameraImage camera={name} stretch />}
+    />
   );
 }
